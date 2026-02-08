@@ -8,11 +8,11 @@
 		<version>4.0.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.spring.microservices</groupId>
-	<artifactId>accounts</artifactId>
+	<groupId>com.financial.microservices</groupId>
+	<artifactId>accounts-svc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>accounts</name>
-	<description>Financial Microservices - Accounts</description>
+	<description>Financial Microservices - Accounts Service</description>
 	<url/>
 	<licenses>
 		<license/>

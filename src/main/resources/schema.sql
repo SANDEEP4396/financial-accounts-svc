@@ -1,9 +1,9 @@
-CREATE TABLE IF NOT EXISTS `customers` (
+CREATE TABLE IF NOT EXISTS `customer` (
     `customer_id` int AUTO_INCREMENT PRIMARY KEY,
     `first_name` varchar(100) NOT NULL,
     `last_name` varchar(100) NOT NULL,
     `email` varchar(255) NOT NULL UNIQUE,
-    `mobile_number` varchar(20) NOT NULL UNIQUE,
+    `phone_number` varchar(20) NOT NULL UNIQUE,
     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `created_by` varchar(100) NOT NULL,

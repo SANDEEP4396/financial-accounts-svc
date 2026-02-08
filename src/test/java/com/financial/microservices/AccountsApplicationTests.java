@@ -1,4 +1,4 @@
-package com.spring.microservices;
+package com.financial.microservices;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
