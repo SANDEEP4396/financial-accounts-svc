@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `customers` (
     `email` varchar(255) NOT NULL UNIQUE,
     `mobile_number` varchar(20) NOT NULL UNIQUE,
     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `created_by` varchar(100) NOT NULL,
     `updated_by` varchar(100) DEFAULT NULL
 );
@@ -18,5 +18,5 @@ CREATE TABLE IF NOT EXISTS `accounts` (
     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `created_by` varchar(100) NOT NULL,
-    `updated_by` varchar(100) DEFAULT NULL,
+    `updated_by` varchar(100) DEFAULT NULL
 );

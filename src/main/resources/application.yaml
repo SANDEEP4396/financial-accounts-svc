@@ -2,15 +2,21 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb // H2 DB URL
-    driverClassName: org.h2.Driver // Required for H2 database to specify the driver class. Driver class is necessary for Spring Boot to know how to connect to the H2 database.
+    #H2 DB URL
+    url: jdbc:h2:mem:testdb
+    # Required for H2 database to specify the driver class. Driver class is necessary for Spring Boot to know how to connect to the H2 database.
+    driverClassName: org.h2.Driver
     username: sa
     password: ''
   h2:
     console:
-      enabled: true // Enable H2 console for debugging
+      # Enable H2 console for debugging
+      enabled: true
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect //Helpful for generating SQL queries specific to H2. This is necessary for Hibernate to understand how to interact with the H2 database.
+    # Helpful for generating SQL queries specific to H2. This is necessary for Hibernate to understand how to interact with the H2 database.
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: update // Automatically update the database schema based on the entity definitions. This is useful for development and testing, but should be used with caution in production environments.
-    show-sql: true // Show SQL statements in the console for debugging purposes. This is helpful for developers to see the actual SQL queries being executed against the database, which can aid in troubleshooting and optimizing database interactions.
+      # Automatically update the database schema based on the entity definitions. This is useful for development and testing, but should be used with caution in production environments.
+      ddl-auto: update
+      # Show SQL statements in the console for debugging purposes. This is helpful for developers to see the actual SQL queries being executed against the database, which can aid in troubleshooting and optimizing database interactions.
+    show-sql: true
