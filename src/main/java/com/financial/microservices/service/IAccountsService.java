@@ -10,6 +10,7 @@ public interface IAccountsService {
         * @param customerDTO - The data transfer object containing customer information needed to create an account.
     */
     void createAccount(CustomerDTO customerDTO);
+    //TODO: This method is responsible for fetching the account details of a customer based on their unique identifier (customerId).
     void fetchAccountDetails(Long customerId);
     CustomerDTO fetchAccountDetailsWithPhoneNumber(String phoneNumber);
     boolean updateCustomerAccountDetails(CustomerDTO customerDTO);
