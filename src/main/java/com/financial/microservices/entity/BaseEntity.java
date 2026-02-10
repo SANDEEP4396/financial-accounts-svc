@@ -1,8 +1,6 @@
 package com.financial.microservices.entity;
 
-import com.financial.microservices.audit.AuditAwareImpl;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
