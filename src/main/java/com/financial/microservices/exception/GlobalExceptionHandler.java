@@ -69,7 +69,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex,
                                      final @NonNull HttpHeaders headers,
                                      final @NonNull HttpStatusCode statusCode,
-                                     final WebRequest request) {
+                                     final @NonNull WebRequest request) {
         final Map<String, String> errors = new HashMap<>();
         List<ObjectError> validationErrors = ex.getBindingResult().getAllErrors();
         validationErrors.forEach(error -> {
