@@ -1,19 +1,24 @@
 package com.financial.microservices.service.impl;
 
+import com.financial.microservices.dto.AccountsDTO;
 import com.financial.microservices.dto.CustomerDTO;
 import com.financial.microservices.entity.Accounts;
 import com.financial.microservices.entity.Customer;
 import com.financial.microservices.exception.CustomerDetailsAlreadyExist;
+import com.financial.microservices.exception.ResourceNotFoundException;
 import com.financial.microservices.repository.AccountsRepository;
 import com.financial.microservices.repository.CustomerRepository;
 import com.financial.microservices.service.IAccountsService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 import static com.financial.microservices.constants.AccountConstants.ADDRESS;
 import static com.financial.microservices.constants.AccountConstants.CHECKING;
+import static com.financial.microservices.mapper.AccountsMapper.mapToAccountsDTO;
 import static com.financial.microservices.mapper.CustomerMapper.mapToCustomer;
+import static com.financial.microservices.mapper.CustomerMapper.mapToCustomerDTO;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +31,7 @@ public class AccountsServiceImpl implements IAccountsService {
     public void createAccount(final CustomerDTO customerDTO) {
         validateCustomerDetails(customerDTO);
         final Customer customer = mapToCustomer(new Customer(), customerDTO);
+
         final Customer createdCustomer = customerRepository.save(customer);
         createAccountForCustomer(createdCustomer);
     }
@@ -38,7 +44,17 @@ public class AccountsServiceImpl implements IAccountsService {
 
     @Override
     public void fetchAccountDetails(final Long customerId) {
+    }
 
+    @Override
+    public CustomerDTO fetchAccountDetailsWithPhoneNumber(String phoneNumber) {
+        Customer customer = customerRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "phone number ", phoneNumber));
+        Accounts accounts = accountsRepository.findByCustomerId(customer.getCustomerId())
+                .orElseThrow(() -> new ResourceNotFoundException("Account", "customer id ", customer.getCustomerId().toString()));
+       CustomerDTO customerDTO =  mapToCustomerDTO(new CustomerDTO(), customer);
+       customerDTO.setAccountsDTO(mapToAccountsDTO(accounts, new AccountsDTO()));
+       return customerDTO;
     }
 
     private void createAccountForCustomer(final Customer customer) {
@@ -48,6 +64,8 @@ public class AccountsServiceImpl implements IAccountsService {
         newAccount.setAccountType(CHECKING);
         newAccount.setBranchAddress(ADDRESS);
         newAccount.setCustomerId(customer.getCustomerId());
+        newAccount.setCreatedBy("System");
+        newAccount.setCreatedAt(LocalDateTime.now());
         accountsRepository.save(newAccount);
     }
 }

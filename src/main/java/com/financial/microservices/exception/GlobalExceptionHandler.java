@@ -9,6 +9,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
 
+@SuppressWarnings("unused")
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -25,6 +26,22 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleResourceNotFoundException(final ResourceNotFoundException ex,
+                                                                              final WebRequest request) {
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+
+                ex.getMessage(),
+                // request.getDescription(false) returns the URI of the request that caused the exception, if its true it returns the URI along with the query parameters, IP etc.
+                request.getDescription(false),
+                HttpStatus.NOT_FOUND,
+                LocalDateTime.now()
+        );
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
                 .body(errorResponse);
     }
 }
