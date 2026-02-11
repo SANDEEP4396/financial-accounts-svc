@@ -3,6 +3,10 @@ package com.financial.accounts.microservice.controller;
 import com.financial.accounts.microservice.dto.CustomerDTO;
 import com.financial.accounts.microservice.dto.ResponseDTO;
 import com.financial.accounts.microservice.service.IAccountsService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -26,6 +30,10 @@ import static com.financial.accounts.microservice.constants.AccountConstants.STA
 import static com.financial.accounts.microservice.constants.AccountConstants.STATUS_500;
 import static com.financial.accounts.microservice.constants.AccountConstants.STATUS_500_MESSAGE;
 
+@Tag(
+        name = "Customer Account Management",
+        description = "This controller provides endpoints for creating, retrieving, updating, and deleting customer accounts"
+)
 @RestController
 @RequestMapping(path = "/accounts", produces = {MediaType.APPLICATION_JSON_VALUE})
 // @AllArgsConstructor is a Lombok annotation that generates a constructor with one parameter for each field in the class.
@@ -41,16 +49,32 @@ public class AccountsController {
 
     private IAccountsService iAccountsService;
 
+    @Operation(
+            summary = "Welcome to home page",
+            description = "This endpoint serves as a welcome message for the home page of the accounts microservice.",
+            tags = {"Home"}
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Successfully accessed the home page"
+    )
     @GetMapping("/home")
     public String home() {
         return "Welcome to home page";
     }
 
-    @GetMapping("/customerDetails")
-    public String customerDetails() {
-        return "Welcome to customer details page";
-    }
-
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "201", description = "Account created successfully"),
+                    @ApiResponse(responseCode = "400", description = "Bad request due to invalid input"),
+                    @ApiResponse(responseCode = "500", description = "Internal server error")
+            }
+    )
+    @Operation(
+            summary = "Create a new customer account",
+            description = "This endpoint allows you to create a new customer account by providing the necessary details in the request body.",
+            tags = {"Customer Account Management"}
+    )
     @PostMapping("/createCustomerAccount")
     public ResponseEntity<ResponseDTO> createCustomerAccount(@Valid @RequestBody CustomerDTO customerDTO) {
         iAccountsService.createAccount(customerDTO);
@@ -59,6 +83,19 @@ public class AccountsController {
                 .body(new ResponseDTO(STATUS_201, STATUS_201_MESSAGE));
     }
 
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Customer account details retrieved successfully"),
+                    @ApiResponse(responseCode = "400", description = "Bad request due to invalid phone number format"),
+                    @ApiResponse(responseCode = "404", description = "Customer account not found"),
+                    @ApiResponse(responseCode = "500", description = "Internal server error")
+            }
+    )
+    @Operation(
+            summary = "Fetch customer account details by phone number",
+            description = "This endpoint allows you to retrieve the account details of a customer using their phone number as a query parameter.",
+            tags = {"Customer Account Management"}
+    )
     @GetMapping("/getAccountDetails")
     public ResponseEntity<CustomerDTO> fetchAccountDetails(@RequestParam
                                                            @Pattern(regexp = "^[2-9][0-9]{10}$", message = "Phone number must be 10 digits")
@@ -67,6 +104,18 @@ public class AccountsController {
         return ResponseEntity.ok(customerDTO);
     }
 
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Customer account details updated successfully"),
+                    @ApiResponse(responseCode = "400", description = "Bad request due to invalid input"),
+                    @ApiResponse(responseCode = "500", description = "Internal server error")
+            }
+    )
+    @Operation(
+            summary = "Update customer account details",
+            description = "This endpoint allows you to update the account details of a customer by providing the updated information in the request body.",
+            tags = {"Customer Account Management"}
+    )
     @PutMapping("/updateCustomerAccountDetails")
     public ResponseEntity<ResponseDTO> updateCustomerAccountDetails(@Valid @RequestBody CustomerDTO customerDTO) {
         boolean isUpdated = iAccountsService.updateCustomerAccountDetails(customerDTO);
@@ -78,6 +127,19 @@ public class AccountsController {
         }
     }
 
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Customer account details deleted successfully"),
+                    @ApiResponse(responseCode = "400", description = "Bad request due to invalid phone number format"),
+                    @ApiResponse(responseCode = "404", description = "Customer account not found"),
+                    @ApiResponse(responseCode = "500", description = "Internal server error")
+            }
+    )
+    @Operation(
+            summary = "Delete customer account details",
+            description = "This endpoint allows you to delete the account details of a customer using their phone number as a query parameter.",
+            tags = {"Customer Account Management"}
+    )
     @DeleteMapping("/deleteCustomerAccountDetails")
     public ResponseEntity<ResponseDTO> deleteCustomerAccountDetails(@RequestParam
                                                                     @Pattern(regexp = "^[2-9][0-9]{10}$", message = "Phone number must be 10 digits")
