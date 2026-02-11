@@ -3,8 +3,6 @@ package com.financial.microservices.mapper;
 import com.financial.microservices.dto.CustomerDTO;
 import com.financial.microservices.entity.Customer;
 
-import java.time.LocalDateTime;
-
 public class CustomerMapper {
 
     public static CustomerDTO mapToCustomerDTO(final CustomerDTO customerDTO, final Customer customer) {

@@ -12,8 +12,6 @@ import com.financial.microservices.service.IAccountsService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 import static com.financial.microservices.constants.AccountConstants.ADDRESS;
 import static com.financial.microservices.constants.AccountConstants.CHECKING;
 import static com.financial.microservices.mapper.AccountsMapper.mapToAccounts;
