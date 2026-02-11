@@ -20,3 +20,10 @@ spring:
       ddl-auto: update
       # Show SQL statements in the console for debugging purposes. This is helpful for developers to see the actual SQL queries being executed against the database, which can aid in troubleshooting and optimizing database interactions.
     show-sql: true
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  api-docs:
+    path: /v3/api-docs
+    # Set the path for the Swagger UI. This allows developers to access the API documentation and test the endpoints through a web interface.
