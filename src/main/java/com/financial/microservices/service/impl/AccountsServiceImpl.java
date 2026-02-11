@@ -97,8 +97,6 @@ public class AccountsServiceImpl implements IAccountsService {
         newAccount.setAccountType(CHECKING);
         newAccount.setBranchAddress(ADDRESS);
         newAccount.setCustomerId(customer.getCustomerId());
-        newAccount.setCreatedBy("System");
-        newAccount.setCreatedAt(LocalDateTime.now());
         accountsRepository.save(newAccount);
     }
 }

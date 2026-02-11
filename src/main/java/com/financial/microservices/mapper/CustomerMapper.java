@@ -20,8 +20,6 @@ public class CustomerMapper {
         customer.setLastName(customerDTO.getLastName());
         customer.setEmail(customerDTO.getEmail());
         customer.setPhoneNumber(customerDTO.getPhoneNumber());
-        customer.setCreatedAt(LocalDateTime.now());
-        customer.setCreatedBy("System");
         return customer;
     }
 }
