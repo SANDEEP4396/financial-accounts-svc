@@ -1,9 +1,12 @@
 package com.financial.accounts.microservice.controller;
 
 import com.financial.accounts.microservice.dto.CustomerDTO;
+import com.financial.accounts.microservice.dto.ErrorResponseDTO;
 import com.financial.accounts.microservice.dto.ResponseDTO;
 import com.financial.accounts.microservice.service.IAccountsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -66,8 +69,18 @@ public class AccountsController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "201", description = "Account created successfully"),
-                    @ApiResponse(responseCode = "400", description = "Bad request due to invalid input"),
-                    @ApiResponse(responseCode = "500", description = "Internal server error")
+                    @ApiResponse(responseCode = "400", description = "Bad request due to invalid input",
+                            content = @Content(
+                                    schema = @Schema(
+                                            implementation = ErrorResponseDTO.class
+                                    )
+                            )),
+                    @ApiResponse(responseCode = "500", description = "Internal server error",
+                            content = @Content(
+                                    schema = @Schema(
+                                            implementation = ErrorResponseDTO.class
+                                    )
+                            ))
             }
     )
     @Operation(
@@ -86,9 +99,25 @@ public class AccountsController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Customer account details retrieved successfully"),
-                    @ApiResponse(responseCode = "400", description = "Bad request due to invalid phone number format"),
-                    @ApiResponse(responseCode = "404", description = "Customer account not found"),
-                    @ApiResponse(responseCode = "500", description = "Internal server error")
+                    @ApiResponse(responseCode = "400", description = "Bad request due to invalid phone number format",
+
+                            content = @Content(
+                                    schema = @Schema(
+                                            implementation = ErrorResponseDTO.class
+                                    )
+                            )),
+                    @ApiResponse(responseCode = "404", description = "Customer account not found",
+                            content = @Content(
+                                    schema = @Schema(
+                                            implementation = ErrorResponseDTO.class
+                                    )
+                            )),
+                    @ApiResponse(responseCode = "500", description = "Internal server error",
+                            content = @Content(
+                                    schema = @Schema(
+                                            implementation = ErrorResponseDTO.class
+                                    )
+                            ))
             }
     )
     @Operation(
@@ -107,8 +136,18 @@ public class AccountsController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Customer account details updated successfully"),
-                    @ApiResponse(responseCode = "400", description = "Bad request due to invalid input"),
-                    @ApiResponse(responseCode = "500", description = "Internal server error")
+                    @ApiResponse(responseCode = "400", description = "Bad request due to invalid input",
+                            content = @Content(
+                                    schema = @Schema(
+                                            implementation = ErrorResponseDTO.class
+                                    )
+                            )),
+                    @ApiResponse(responseCode = "500", description = "Internal server error",
+                            content = @Content(
+                                    schema = @Schema(
+                                            implementation = ErrorResponseDTO.class
+                                    )
+                            ))
             }
     )
     @Operation(
@@ -130,9 +169,24 @@ public class AccountsController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Customer account details deleted successfully"),
-                    @ApiResponse(responseCode = "400", description = "Bad request due to invalid phone number format"),
-                    @ApiResponse(responseCode = "404", description = "Customer account not found"),
-                    @ApiResponse(responseCode = "500", description = "Internal server error")
+                    @ApiResponse(responseCode = "400", description = "Bad request due to invalid phone number format",
+                            content = @Content(
+                                    schema = @Schema(
+                                            implementation = ErrorResponseDTO.class
+                                    )
+                            )),
+                    @ApiResponse(responseCode = "404", description = "Customer account not found",
+                            content = @Content(
+                                    schema = @Schema(
+                                            implementation = ErrorResponseDTO.class
+                                    )
+                            )),
+                    @ApiResponse(responseCode = "500", description = "Internal server error",
+                            content = @Content(
+                                    schema = @Schema(
+                                            implementation = ErrorResponseDTO.class
+                                    )
+                            ))
             }
     )
     @Operation(
