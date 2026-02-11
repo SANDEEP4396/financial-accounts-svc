@@ -28,7 +28,7 @@ public class ErrorResponseDTO {
 
     @Schema(
             description = "Error code of the response",
-            example = "400 BAD_REQUEST"
+            example = "400/500"
     )
     private HttpStatus errorCode;
 
