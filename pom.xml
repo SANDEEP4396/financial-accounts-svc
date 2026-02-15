@@ -11,6 +11,7 @@
 	<groupId>com.financial.accounts.microservice</groupId>
 	<artifactId>accounts-svc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging> <!-- Required for generating Docker images -->
 	<name>accounts</name>
 	<description>Financial Microservices - Accounts Service</description>
 	<url/>
