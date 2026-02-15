@@ -3,3 +3,12 @@ Important commands:
 - 'mvn clean install' to build the project
 - 'mvn spring-boot:run' to run the application
 - 'java -jar target/accounts-svc-0.0.1-SNAPSHOT.jar' to run the application from the jar file
+
+-------
+To create docker image and run the application in docker container:
+- 'mvn clean install' to build the project
+- 'docker build -t sandeep4396/accounts-svc:latest .' to build the docker image if the Dockerfile is in the current directory. The '-t' flag is used to tag the image with a name and version (latest in this case).
+- 'docker run -p 8080:8080 accounts-svc:latest' to run the application in docker container and map port 8080 of the container to port 8080 of your application, basically which we set in the application.properties file, server port.
+This allows you to access the application at 'http://localhost:8080' from your browser or any API client.
+
+You can also use 'docker run -d -p 8080:8080 accounts-svc:latest' to run the container in detached mode, which means it will run in the background. You can check the running containers using 'docker ps' command.
