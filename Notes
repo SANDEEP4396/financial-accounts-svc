@@ -19,3 +19,33 @@ The syntax is '-p <host_port>:<container_port>'.
 In this case, we are mapping port 8080 of the host machine to port 8080 of the container, which allows us to access the application running inside the container through port 8080 on the host machine.
 
 (Where the first 8080(can be any port) is the port which will be expose for the user and the second 8080 is the port on which the application is running inside the container.)
+
+
+IMPORT TIPS:
+
+* TO keep docker image small, we can use multi-stage builds in the Dockerfile.
+* This allows us to separate the build environment from the runtime environment, resulting in a smaller final image.
+
+1st Approach: Buildpacks are a set of scripts that automate the process of building and packaging applications into container images.
+They detect the application type and dependencies, and then create a container image that can be run on any platform that supports Docker.
+We can use Heroku Buildpacks or Paketo Buildpacks to create container images for our Java applications.
+
+2nd Approach: Jib is a Java containerization tool that allows you to build Docker and OCI images for your Java applications without needing a Dockerfile.
+It integrates with Maven and Gradle, making it easy to use in Java projects. Jib builds optimized container images by layering the application and its dependencies, which can speed up the build process and reduce the size of the resulting image.
+
+
+1st Way: Using Buildpacks
+
+In pom.xml, add the following plugin configuration for the Spring Boot Maven plugin:
+            <plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+					<image>
+						<name>sandeep4396/${project.artifactId}:latest</name>
+					</image>
+			</configuration>
+			</plugin>
+
+Then, you can build the image using the following command:
+'mvn spring-boot:build-image' then you will see Successfully built image 'docker.io/sandeep4396/accounts-svc:latest'
