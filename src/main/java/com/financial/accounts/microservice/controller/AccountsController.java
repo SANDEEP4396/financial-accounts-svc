@@ -13,6 +13,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,15 +49,25 @@ import static com.financial.accounts.microservice.constants.AccountConstants.STA
 // public AccountsController(IAccountsService iAccountsService) {
 //     this.iAccountsService = iAccountsService;
 // } Or use @Autowired annotation on the field for Spring to inject the dependency.
-@AllArgsConstructor
+//@AllArgsConstructor
+//@NoArgsConstructor
 @Validated
 public class AccountsController {
 
-    private IAccountsService iAccountsService;
+
+    private final IAccountsService iAccountsService;
+
+    @Value("${build.version}")
+    private String buildVersion;
+
+    public AccountsController(final IAccountsService iAccountsService) {
+        this.iAccountsService = iAccountsService;
+    }
 
     @Operation(
-            summary = "Welcome to home page",
-            description = "This endpoint serves as a welcome message for the home page of the accounts microservice.",
+            summary = "Welcome to home page, along with build version",
+            description = "This endpoint serves as a welcome message for the home page of the accounts microservice. " +
+                    "Also, it provides the build version of the application, which can be useful for debugging and monitoring purposes.",
             tags = {"Home"}
     )
     @ApiResponse(
@@ -62,8 +75,8 @@ public class AccountsController {
             description = "Successfully accessed the home page"
     )
     @GetMapping("/home")
-    public String home() {
-        return "Welcome to home page";
+    public String buildInfo() {
+        return "Welcome to home page: " + buildVersion;
     }
 
     @ApiResponses(

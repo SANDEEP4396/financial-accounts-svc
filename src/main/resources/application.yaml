@@ -27,3 +27,6 @@ springdoc:
   api-docs:
     path: /v3/api-docs
     # Set the path for the Swagger UI. This allows developers to access the API documentation and test the endpoints through a web interface.
+
+build:
+  version: "1.0"
