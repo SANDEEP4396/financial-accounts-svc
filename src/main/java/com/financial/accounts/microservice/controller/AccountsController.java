@@ -12,10 +12,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -54,9 +53,9 @@ import static com.financial.accounts.microservice.constants.AccountConstants.STA
 @Validated
 public class AccountsController {
 
-
+    @Autowired
+    private Environment environment;
     private final IAccountsService iAccountsService;
-
     @Value("${build.version}")
     private String buildVersion;
 
@@ -218,5 +217,33 @@ public class AccountsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDTO(STATUS_500, STATUS_500_MESSAGE));
         }
+    }
+
+    @Operation(
+            summary = "Get Java version",
+            description = "This endpoint allows you to retrieve the Java version that the application is running on.",
+            tags = {"System Information"}
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Java version retrieved successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = ErrorResponseDTO.class
+                            )
+                    )
+            )
+    })
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(environment.getProperty("java.version"));
+        //Clie Can try "JAVA_HOME" as well to get the Java home directory and "MAVEN_HOME" to get the Maven home directory.
     }
 }
