@@ -1,5 +1,6 @@
 package com.financial.accounts.microservice.controller;
 
+import com.financial.accounts.microservice.dto.AccountsContactInfoDto;
 import com.financial.accounts.microservice.dto.CustomerDTO;
 import com.financial.accounts.microservice.dto.ErrorResponseDTO;
 import com.financial.accounts.microservice.dto.ResponseDTO;
@@ -50,18 +51,23 @@ import static com.financial.accounts.microservice.constants.AccountConstants.STA
 // } Or use @Autowired annotation on the field for Spring to inject the dependency.
 //@AllArgsConstructor
 //@NoArgsConstructor
-@Validated
+@Validated // This annotation is used to enable validation for the controller. It allows you to use validation annotations on method parameters and request bodies,
+// ensuring that the incoming data meets the specified constraints before processing it.
 public class AccountsController {
 
+
+    @Autowired
+    private IAccountsService accountsService;
+    public AccountsController(final IAccountsService iAccountsService) {
+        this.iAccountsService = iAccountsService;
+    }
     @Autowired
     private Environment environment;
     private final IAccountsService iAccountsService;
     @Value("${build.version}")
     private String buildVersion;
-
-    public AccountsController(final IAccountsService iAccountsService) {
-        this.iAccountsService = iAccountsService;
-    }
+    @Autowired
+    private AccountsContactInfoDto accountsContactInfoDto;
 
     @Operation(
             summary = "Welcome to home page, along with build version",
@@ -244,6 +250,13 @@ public class AccountsController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(environment.getProperty("java.version"));
-        //Clie Can try "JAVA_HOME" as well to get the Java home directory and "MAVEN_HOME" to get the Maven home directory.
+        //Client Can try "JAVA_HOME" as well to get the Java home directory and "MAVEN_HOME" to get the Maven home directory.
+    }
+
+    @GetMapping("/contact-info")
+    public  ResponseEntity<AccountsContactInfoDto> getContactInfo() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountsContactInfoDto);
     }
 }
