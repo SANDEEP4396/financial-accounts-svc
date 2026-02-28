@@ -7,30 +7,33 @@ spring:
     active: "prod"
   config:
     import: "optional:configserver:http://localhost:8071/"
-  rabbitmq:
-    host: "localhost"
-    port: 5672
-    username: "guest"
-    password: "guest"
+#  rabbitmq:
+#    host: "localhost"
+#    port: 5672
+#    username: "guest"
+#    password: "guest"
   datasource:
     #H2 DB URL
-    url: jdbc:h2:mem:testdb
+    url: jdbc:mysql://localhost:3306/accountsDB
     # Required for H2 database to specify the driver class. Driver class is necessary for Spring Boot to know how to connect to the H2 database.
-    driverClassName: org.h2.Driver
-    username: sa
-    password: ''
-  h2:
-    console:
-      # Enable H2 console for debugging
-      enabled: true
+#    driverClassName: org.h2.Driver
+    username: root
+    password: root
+#  h2:
+#    console:
+#      # Enable H2 console for debugging
+#      enabled: true
   jpa:
     # Helpful for generating SQL queries specific to H2. This is necessary for Hibernate to understand how to interact with the H2 database.
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      # Automatically update the database schema based on the entity definitions. This is useful for development and testing, but should be used with caution in production environments.
-      ddl-auto: update
+#    database-platform: org.hibernate.dialect.H2Dialect
+#    hibernate:
+#      # Automatically update the database schema based on the entity definitions. This is useful for development and testing, but should be used with caution in production environments.
+#      ddl-auto: update
       # Show SQL statements in the console for debugging purposes. This is helpful for developers to see the actual SQL queries being executed against the database, which can aid in troubleshooting and optimizing database interactions.
     show-sql: true
+    sql:
+      init:
+         mode: always # This configuration ensures that the database schema is initialized every time the application starts. This is particularly useful during development and testing to ensure that the database is in a known state, but it should be used with caution in production environments to avoid unintended data loss.
 # Enables refresh, busRefresh paths
 management:
   endpoints:
