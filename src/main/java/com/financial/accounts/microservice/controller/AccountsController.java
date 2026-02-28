@@ -54,8 +54,6 @@ import static com.financial.accounts.microservice.constants.AccountConstants.STA
 @Validated // This annotation is used to enable validation for the controller. It allows you to use validation annotations on method parameters and request bodies,
 // ensuring that the incoming data meets the specified constraints before processing it.
 public class AccountsController {
-
-
     @Autowired
     private IAccountsService accountsService;
     public AccountsController(final IAccountsService iAccountsService) {
