@@ -1,5 +1,6 @@
 package com.financial.accounts.microservice.controller;
 
+import com.financial.accounts.microservice.dto.AccountsContactInfoDto;
 import com.financial.accounts.microservice.dto.CustomerDTO;
 import com.financial.accounts.microservice.dto.ErrorResponseDTO;
 import com.financial.accounts.microservice.dto.ResponseDTO;
@@ -12,7 +13,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,15 +49,28 @@ import static com.financial.accounts.microservice.constants.AccountConstants.STA
 // public AccountsController(IAccountsService iAccountsService) {
 //     this.iAccountsService = iAccountsService;
 // } Or use @Autowired annotation on the field for Spring to inject the dependency.
-@AllArgsConstructor
-@Validated
+//@AllArgsConstructor
+//@NoArgsConstructor
+@Validated // This annotation is used to enable validation for the controller. It allows you to use validation annotations on method parameters and request bodies,
+// ensuring that the incoming data meets the specified constraints before processing it.
 public class AccountsController {
-
-    private IAccountsService iAccountsService;
+    @Autowired
+    private IAccountsService accountsService;
+    public AccountsController(final IAccountsService iAccountsService) {
+        this.iAccountsService = iAccountsService;
+    }
+    @Autowired
+    private Environment environment;
+    private final IAccountsService iAccountsService;
+    @Value("${build.version}")
+    private String buildVersion;
+    @Autowired
+    private AccountsContactInfoDto accountsContactInfoDto;
 
     @Operation(
-            summary = "Welcome to home page",
-            description = "This endpoint serves as a welcome message for the home page of the accounts microservice.",
+            summary = "Welcome to home page, along with build version",
+            description = "This endpoint serves as a welcome message for the home page of the accounts microservice. " +
+                    "Also, it provides the build version of the application, which can be useful for debugging and monitoring purposes.",
             tags = {"Home"}
     )
     @ApiResponse(
@@ -62,8 +78,8 @@ public class AccountsController {
             description = "Successfully accessed the home page"
     )
     @GetMapping("/home")
-    public String home() {
-        return "Welcome to home page";
+    public String buildInfo() {
+        return "Welcome to home page: " + buildVersion;
     }
 
     @ApiResponses(
@@ -205,5 +221,40 @@ public class AccountsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDTO(STATUS_500, STATUS_500_MESSAGE));
         }
+    }
+
+    @Operation(
+            summary = "Get Java version",
+            description = "This endpoint allows you to retrieve the Java version that the application is running on.",
+            tags = {"System Information"}
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Java version retrieved successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = ErrorResponseDTO.class
+                            )
+                    )
+            )
+    })
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(environment.getProperty("java.version"));
+        //Client Can try "JAVA_HOME" as well to get the Java home directory and "MAVEN_HOME" to get the Maven home directory.
+    }
+
+    @GetMapping("/contact-info")
+    public  ResponseEntity<AccountsContactInfoDto> getContactInfo() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountsContactInfoDto);
     }
 }

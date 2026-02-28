@@ -1,6 +1,17 @@
 server:
   port: 8080
 spring:
+  application:
+    name: "accounts"
+  profiles:
+    active: "prod"
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
   datasource:
     #H2 DB URL
     url: jdbc:h2:mem:testdb
@@ -20,6 +31,12 @@ spring:
       ddl-auto: update
       # Show SQL statements in the console for debugging purposes. This is helpful for developers to see the actual SQL queries being executed against the database, which can aid in troubleshooting and optimizing database interactions.
     show-sql: true
+# Enables refresh, busRefresh paths
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" # This configuration allows all management endpoints to be exposed over the web. This is useful for monitoring and managing the application, but in a production environment, you should consider restricting access to sensitive endpoints for security reasons.
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
