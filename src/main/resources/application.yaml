@@ -19,6 +19,7 @@ spring:
 #    driverClassName: org.h2.Driver
     username: root
     password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
 #  h2:
 #    console:
 #      # Enable H2 console for debugging
@@ -31,9 +32,9 @@ spring:
 #      ddl-auto: update
       # Show SQL statements in the console for debugging purposes. This is helpful for developers to see the actual SQL queries being executed against the database, which can aid in troubleshooting and optimizing database interactions.
     show-sql: true
-    sql:
-      init:
-         mode: always # This configuration ensures that the database schema is initialized every time the application starts. This is particularly useful during development and testing to ensure that the database is in a known state, but it should be used with caution in production environments to avoid unintended data loss.
+  sql:
+   init:
+    mode: always # This configuration ensures that the database schema is initialized every time the application starts. This is particularly useful during development and testing to ensure that the database is in a known state, but it should be used with caution in production environments to avoid unintended data loss.
 # Enables refresh, busRefresh paths
 management:
   endpoints:
