@@ -14,22 +14,24 @@ spring:
 #    password: "guest"
   datasource:
     #H2 DB URL
-    url: jdbc:mysql://localhost:3306/accountsDB
+    url: jdbc:h2:mem:testdb
+    #url: jdbc:mysql://localhost:3306/accountsDB
     # Required for H2 database to specify the driver class. Driver class is necessary for Spring Boot to know how to connect to the H2 database.
 #    driverClassName: org.h2.Driver
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-#  h2:
-#    console:
-#      # Enable H2 console for debugging
-#      enabled: true
+    username: sa
+    password: ''
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+    driverClassName: org.h2.Driver
+  h2:
+    console:
+      # Enable H2 console for debugging
+      enabled: true
   jpa:
     # Helpful for generating SQL queries specific to H2. This is necessary for Hibernate to understand how to interact with the H2 database.
-#    database-platform: org.hibernate.dialect.H2Dialect
-#    hibernate:
-#      # Automatically update the database schema based on the entity definitions. This is useful for development and testing, but should be used with caution in production environments.
-#      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      # Automatically update the database schema based on the entity definitions. This is useful for development and testing, but should be used with caution in production environments.
+      ddl-auto: update
       # Show SQL statements in the console for debugging purposes. This is helpful for developers to see the actual SQL queries being executed against the database, which can aid in troubleshooting and optimizing database interactions.
     show-sql: true
   sql:
@@ -37,6 +39,12 @@ spring:
     mode: always # This configuration ensures that the database schema is initialized every time the application starts. This is particularly useful during development and testing to ensure that the database is in a known state, but it should be used with caution in production environments to avoid unintended data loss.
 # Enables refresh, busRefresh paths
 management:
+  endpoint:
+    shutdown:
+      enabled: true # This configuration enables the shutdown endpoint, which allows you to gracefully shut down the application by sending a POST request to the /actuator/shutdown endpoint. This can be useful for managing the lifecycle of the application and performing cleanup tasks before shutting down.
+  info:
+    env:
+      enabled: true # This configuration enables the inclusion of environment information in the application's info endpoint. This can be useful for debugging and monitoring purposes, as it allows you to see the active profiles, property sources, and other environment details when accessing the /actuator/info endpoint.
   endpoints:
     web:
       exposure:
@@ -48,3 +56,25 @@ springdoc:
   api-docs:
     path: /v3/api-docs
     # Set the path for the Swagger UI. This allows developers to access the API documentation and test the endpoints through a web interface.
+
+# Registers with Eureka server for service discovery and sends heartbeats to indicate that the service is alive and healthy. This allows other services to discover and communicate with this service through the Eureka server.
+eureka:
+  instance:
+    preferIpAddress: true # This configuration tells the Eureka client to prefer using the IP address of the instance when registering with the Eureka server, instead of the hostname. This can be useful in certain network configurations where the hostname may not resolve correctly or when you want to ensure that the service is registered with its IP address for better connectivity.
+  client:
+    fetchRegistry: true # This configuration tells the Eureka client to fetch the registry information from the Eureka server. This allows the service to discover other services registered with the Eureka server and communicate with them. Setting this to true is necessary for service discovery to work properly.
+    registerWithEureka: true # This configuration tells the Eureka client to register itself with the
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/ # This is the URL of the Eureka server that this service will register with. In this case, it is set to http://localhost:8070/eureka/, which means that the service will register itself with the Eureka server running on localhost at port 8070. If your Eureka server is running on a different host or port, you should update this URL accordingly.
+
+# The "info" section is used to provide metadata about the application, such as its name, description, and version. This information can be useful for monitoring and management purposes, as it allows you to easily identify the service and its version when viewing the application's health and status in a monitoring tool or dashboard.
+info:
+  app:
+    name: "accounts"
+    description: "This service manages customer accounts and related information."
+    version: "1.0.0"
+
+# Optional for now can be ignored
+endpoints:
+  shutdown:
+    enabled: true # This configuration enables the shutdown endpoint, which allows you to gracefully shut down the application by sending a POST request to the /actuator/shutdown endpoint. This can be useful for managing the lifecycle of the application and performing cleanup tasks before shutting down.

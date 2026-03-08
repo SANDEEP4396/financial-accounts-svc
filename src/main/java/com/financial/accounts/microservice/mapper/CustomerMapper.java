@@ -1,6 +1,7 @@
 package com.financial.accounts.microservice.mapper;
 
 import com.financial.accounts.microservice.dto.CustomerDTO;
+import com.financial.accounts.microservice.dto.CustomerDetailsDTO;
 import com.financial.accounts.microservice.entity.Customer;
 
 public class CustomerMapper {
@@ -19,5 +20,13 @@ public class CustomerMapper {
         customer.setEmail(customerDTO.getEmail());
         customer.setPhoneNumber(customerDTO.getPhoneNumber());
         return customer;
+    }
+
+    public static CustomerDetailsDTO mapToCustomerDetailsDTO(final CustomerDetailsDTO customerDetailsDTO, final Customer customer) {
+        customerDetailsDTO.setFirstName(customer.getFirstName());
+        customerDetailsDTO.setLastName(customer.getLastName());
+        customerDetailsDTO.setEmail(customer.getEmail());
+        customerDetailsDTO.setPhoneNumber(customer.getPhoneNumber());
+        return customerDetailsDTO;
     }
 }

@@ -1,5 +1,7 @@
 package com.financial.accounts.microservice.dto;
 
+import com.financial.accounts.microservice.dto.cards.CardDTO;
+import com.financial.accounts.microservice.dto.loans.LoanDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -9,10 +11,9 @@ import lombok.Data;
 
 @Data
 @Schema(
-        name = "Customer",
-        description = "Schema holds the details of the customer such as first name, last name, email, phone number and accounts information"
-)
-public class CustomerDTO {
+        name = "CustomerDetails",
+        description = "Schema holds the details of the customer cards, loans and accounts information")
+public class CustomerDetailsDTO {
     @Schema(
             description = "First name of the customer",
             example = "John"
@@ -39,11 +40,21 @@ public class CustomerDTO {
             description = "Phone number of the customer",
             example = "9876543210"
     )
-    @Pattern(regexp = "^[2-9][0-9]{9}$", message = "Phone number must be 10 digits")
+    @Pattern(regexp = "^[2-9][0-9]{10}$", message = "Phone number must be 10 digits")
     private String phoneNumber;
 
     @Schema(
             description = "Accounts information of the customer"
     )
     private AccountsDTO accountsDTO;
+
+    @Schema(
+            description = "Loans information of the customer"
+    )
+    private LoanDTO loanDTO;
+
+    @Schema(
+            description = "Cards information of the customer"
+    )
+    private CardDTO cardDTO;
 }
