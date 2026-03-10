@@ -41,7 +41,7 @@ import static com.financial.accounts.microservice.constants.AccountConstants.STA
         description = "This controller provides endpoints for creating, retrieving, updating, and deleting customer accounts"
 )
 @RestController
-@RequestMapping(path = "/accounts", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 // @AllArgsConstructor is a Lombok annotation that generates a constructor with one parameter for each field in the class.
 // In this case, it will generate a constructor that takes an IAccountsService as a parameter and assigns it to the iAccountsService field.
 // This allows for dependency injection of the IAccountsService when creating an instance of AccountsController.
