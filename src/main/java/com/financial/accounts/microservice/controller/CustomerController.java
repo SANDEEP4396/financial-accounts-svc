@@ -10,10 +10,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/api/customers", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class CustomerController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
     private final ICustomerService customerService;
 
     public CustomerController(final ICustomerService customerService) {
@@ -63,11 +67,13 @@ public class CustomerController {
             tags = {"Customer Accounts"}
     )
     @GetMapping("/fetchCustomerDetails")
-    public ResponseEntity<CustomerDetailsDTO> fetchCustomerDetails(@RequestParam
+    public ResponseEntity<CustomerDetailsDTO> fetchCustomerDetails(@RequestHeader("X-Correlation-ID") String correlationId,
+                                                                   @RequestParam
                                                                    @Pattern(regexp = "^[2-9][0-9]{9}$", message = "Phone number must be 10 digits")
                                                                    String phoneNumber) {
+        LOGGER.debug("correlationId: {}, Fetching customer details for phone number: {}", correlationId, phoneNumber);
         // Implementation to fetch customer details based on phone number
-        final CustomerDetailsDTO customerDetailsDTO = customerService.fetchCustomerDetails(phoneNumber);
-        return  ResponseEntity.ok(customerDetailsDTO);
+        final CustomerDetailsDTO customerDetailsDTO = customerService.fetchCustomerDetails(phoneNumber, correlationId);
+        return ResponseEntity.ok(customerDetailsDTO);
     }
 }

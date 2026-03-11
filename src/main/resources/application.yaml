@@ -42,9 +42,17 @@ management:
   endpoint:
     shutdown:
       enabled: true # This configuration enables the shutdown endpoint, which allows you to gracefully shut down the application by sending a POST request to the /actuator/shutdown endpoint. This can be useful for managing the lifecycle of the application and performing cleanup tasks before shutting down.
+    health:
+      probes:
+        enabled: true # This configuration enables health probes, which are used by container orchestration platforms (like Kubernetes) to check the health of the application. This allows the platform to automatically restart the application if it becomes unhealthy, improving the reliability and availability of the service.
   info:
     env:
       enabled: true # This configuration enables the inclusion of environment information in the application's info endpoint. This can be useful for debugging and monitoring purposes, as it allows you to see the active profiles, property sources, and other environment details when accessing the /actuator/info endpoint.
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
   endpoints:
     web:
       exposure:
@@ -78,3 +86,11 @@ info:
 endpoints:
   shutdown:
     enabled: true # This configuration enables the shutdown endpoint, which allows you to gracefully shut down the application by sending a POST request to the /actuator/shutdown endpoint. This can be useful for managing the lifecycle of the application and performing cleanup tasks before shutting down.
+
+logging:
+    level:
+      com:
+        financial:
+          accounts:
+            microservice: DEBUG # This configuration sets the logging level for the "com.financial.accounts" package to DEBUG. This means that all log messages at the DEBUG level and above (INFO, WARN, ERROR) will be logged for classes within this package. This can be useful for troubleshooting and debugging issues related to the accounts service, as it provides detailed information about the application's behavior and interactions with other components.
+

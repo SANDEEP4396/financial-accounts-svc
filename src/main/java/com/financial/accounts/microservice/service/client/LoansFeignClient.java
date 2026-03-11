@@ -4,6 +4,7 @@ import com.financial.accounts.microservice.dto.loans.LoanDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 // Eureka service will resolve the "cards" service name to the actual URL of the cards microservice,
@@ -12,5 +13,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface LoansFeignClient {
 
     @GetMapping(value = "api/fetchLoan", consumes = "application/json")
-    ResponseEntity<LoanDTO> fetchLoanDetails(@RequestParam String phoneNumber);
+    ResponseEntity<LoanDTO> fetchLoanDetails(@RequestParam String phoneNumber, @RequestHeader("X-Correlation-ID") String correlationId);
 }

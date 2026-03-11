@@ -9,5 +9,5 @@ public interface ICustomerService {
         * @param phoneNumber The phone number of the customer for whom the details are to be fetched.
         * @return CustomerDetailsDTO containing the details of the customer, including their accounts, loans, and cards information.
      */
-    CustomerDetailsDTO fetchCustomerDetails(String phoneNumber);
+    CustomerDetailsDTO fetchCustomerDetails(String phoneNumber, String correlationId);
 }

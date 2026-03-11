@@ -34,7 +34,7 @@ public class CustomerServiceImpl implements ICustomerService {
      * @return CustomerDetailsDTO containing the details of the customer, including their accounts, loans, and cards information.
      */
     @Override
-    public CustomerDetailsDTO fetchCustomerDetails(String phoneNumber) {
+    public CustomerDetailsDTO fetchCustomerDetails(String phoneNumber, String correlationId) {
         Customer customer = customerRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer", "phone number ", phoneNumber));
         Accounts accounts = accountsRepository.findByCustomerId(customer.getCustomerId())
@@ -42,12 +42,12 @@ public class CustomerServiceImpl implements ICustomerService {
         CustomerDetailsDTO customerDetailsDTO = mapToCustomerDetailsDTO(new CustomerDetailsDTO(), customer);
         customerDetailsDTO.setAccountsDTO(mapToAccountsDTO(accounts, new AccountsDTO()));
 
-        final ResponseEntity<LoanDTO> loanDTOResponseEntity = loansFeignClient.fetchLoanDetails(phoneNumber);
+        final ResponseEntity<LoanDTO> loanDTOResponseEntity = loansFeignClient.fetchLoanDetails(phoneNumber, correlationId);
         if (loanDTOResponseEntity.getStatusCode().is2xxSuccessful()) {
             customerDetailsDTO.setLoanDTO(loanDTOResponseEntity.getBody());
         }
 
-        final ResponseEntity<CardDTO> cardDTOResponseEntity = cardsFeignClient.fetchCardDetails(phoneNumber);
+        final ResponseEntity<CardDTO> cardDTOResponseEntity = cardsFeignClient.fetchCardDetails(phoneNumber, correlationId);
         if (cardDTOResponseEntity.getStatusCode().is2xxSuccessful()) {
             customerDetailsDTO.setCardDTO(cardDTOResponseEntity.getBody());
         }
