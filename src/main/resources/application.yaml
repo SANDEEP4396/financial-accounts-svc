@@ -108,3 +108,10 @@ resilience4j:
         permittedNumberOfCallsInHalfOpenState: 2
         failureRateThreshold: 50
         waitDurationInOpenState: 10000
+  retry:
+    configs:
+      default:
+        enableExponentialBackoff: true # This configuration enables exponential backoff for retry attempts. With exponential backoff, the wait duration between retry attempts will increase exponentially (e.g., 2 seconds, 4 seconds, 8 seconds) after each failed attempt. This can help to reduce the load on the system and increase the chances of a successful retry by allowing more time for transient issues to resolve before trying again.
+        exponentialBackoffMultiplier: 2 # This configuration sets the multiplier for exponential backoff to 2. This means that the wait duration between retry attempts will double after each failed attempt (e.g., 2 seconds, 4 seconds, 8 seconds). This can help to reduce the load on the system and increase the chances of a successful retry by allowing more time for transient issues to resolve before trying again.
+        maxRetryAttempts: 3 # This configuration sets the maximum number of retry attempts to 3. This means that if a call fails, the system will automatically retry the call up to 3 times before giving up and returning an error. This can help to improve the resilience of the application by allowing it to recover from transient failures without requiring manual intervention.
+        waitDuration: 5000 # This configuration sets the wait duration between retry attempts to 2000 milliseconds (2 seconds). This means that after a failed call, the system will wait for 2 seconds before attempting the next retry. This can help to prevent overwhelming the system with rapid retries and allows time for transient issues to resolve before trying again.

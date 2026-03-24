@@ -5,6 +5,7 @@ import com.financial.accounts.microservice.dto.CustomerDTO;
 import com.financial.accounts.microservice.dto.ErrorResponseDTO;
 import com.financial.accounts.microservice.dto.ResponseDTO;
 import com.financial.accounts.microservice.service.IAccountsService;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,6 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -56,9 +59,7 @@ import static com.financial.accounts.microservice.constants.AccountConstants.STA
 public class AccountsController {
     @Autowired
     private IAccountsService accountsService;
-    public AccountsController(final IAccountsService iAccountsService) {
-        this.iAccountsService = iAccountsService;
-    }
+
     @Autowired
     private Environment environment;
     private final IAccountsService iAccountsService;
@@ -66,7 +67,11 @@ public class AccountsController {
     private String buildVersion;
     @Autowired
     private AccountsContactInfoDto accountsContactInfoDto;
+    public AccountsController(final IAccountsService iAccountsService) {
+        this.iAccountsService = iAccountsService;
+    }
 
+    private Logger logger = LoggerFactory.getLogger(AccountsController.class);
     @Operation(
             summary = "Welcome to home page, along with build version",
             description = "This endpoint serves as a welcome message for the home page of the accounts microservice. " +
@@ -251,11 +256,23 @@ public class AccountsController {
         //Client Can try "JAVA_HOME" as well to get the Java home directory and "MAVEN_HOME" to get the Maven home directory.
     }
 
+    @Retry(name = "getContactInfo", fallbackMethod = "getContactInfoFallback")
     @GetMapping("/contact-info")
-    public  ResponseEntity<AccountsContactInfoDto> getContactInfo() throws InterruptedException {
+    public  ResponseEntity<AccountsContactInfoDto> getContactInfo()  {
+        logger.debug("Fetching contact information from accounts microservice");
+        throw new RuntimeException("Simulating downstream service failure to test retry mechanism");
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body(accountsContactInfoDto);
+    }
+
+    public ResponseEntity<AccountsContactInfoDto> getContactInfoFallback(Throwable throwable) {
+        logger.debug("Fetching contact information from getContactInfoFallback method", throwable);
+        AccountsContactInfoDto fallbackResponse = new AccountsContactInfoDto();
+        fallbackResponse.setMessage("Unable to fetch contact information at the moment. Please try again later.");
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(accountsContactInfoDto);
-    }
+                .body(fallbackResponse);
+}
 }
