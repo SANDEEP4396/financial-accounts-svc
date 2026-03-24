@@ -22,6 +22,12 @@ spring:
     password: ''
 #    driver-class-name: com.mysql.cj.jdbc.Driver
     driverClassName: org.h2.Driver
+  cloud:
+   openfeign:
+      circuitbreaker:
+        enabled: true
+        alphanumeric-ids:
+          enabled: true
   h2:
     console:
       # Enable H2 console for debugging
@@ -94,3 +100,11 @@ logging:
           accounts:
             microservice: DEBUG # This configuration sets the logging level for the "com.financial.accounts" package to DEBUG. This means that all log messages at the DEBUG level and above (INFO, WARN, ERROR) will be logged for classes within this package. This can be useful for troubleshooting and debugging issues related to the accounts service, as it provides detailed information about the application's behavior and interactions with other components.
 
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10 # This configuration sets the size of the sliding window for the circuit breaker to 10, which means that the circuit breaker will consider the last 10 calls to determine whether to open or close the circuit. This can help to smooth out fluctuations in call success rates and provide a more stable behavior for the circuit breaker.
+        permittedNumberOfCallsInHalfOpenState: 2
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10000

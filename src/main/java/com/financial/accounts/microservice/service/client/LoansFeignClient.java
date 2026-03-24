@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 // Eureka service will resolve the "cards" service name to the actual URL of the cards microservice,
 // allowing this Feign client to communicate with it seamlessly.
-@FeignClient("loans")
+@FeignClient(name = "loans", fallback = LoansFallback.class)
 public interface LoansFeignClient {
 
     @GetMapping(value = "api/fetchLoan", consumes = "application/json")

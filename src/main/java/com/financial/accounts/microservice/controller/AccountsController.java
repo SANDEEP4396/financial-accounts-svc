@@ -253,7 +253,7 @@ public class AccountsController {
 
     @GetMapping("/contact-info")
     public  ResponseEntity<AccountsContactInfoDto> getContactInfo() throws InterruptedException {
-        //Thread.sleep(1000);
+
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(accountsContactInfoDto);
