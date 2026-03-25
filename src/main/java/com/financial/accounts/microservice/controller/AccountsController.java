@@ -5,6 +5,7 @@ import com.financial.accounts.microservice.dto.CustomerDTO;
 import com.financial.accounts.microservice.dto.ErrorResponseDTO;
 import com.financial.accounts.microservice.dto.ResponseDTO;
 import com.financial.accounts.microservice.service.IAccountsService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -249,11 +250,20 @@ public class AccountsController {
             )
     })
     @GetMapping("/java-version")
+    @RateLimiter(name = "getJavaVersion", fallbackMethod = "getJavaVersionFallback")
     public ResponseEntity<String> getJavaVersion() {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(environment.getProperty("java.version"));
         //Client Can try "JAVA_HOME" as well to get the Java home directory and "MAVEN_HOME" to get the Maven home directory.
+    }
+
+    public ResponseEntity<String> getJavaVersionFallback(Throwable throwable) {
+        logger.debug("Fetching Java version from getJavaVersionFallback method", throwable);
+        String fallbackResponse = "Unable to fetch Java version at the moment. Please try again later.";
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(fallbackResponse);
     }
 
     @Retry(name = "getContactInfo", fallbackMethod = "getContactInfoFallback")

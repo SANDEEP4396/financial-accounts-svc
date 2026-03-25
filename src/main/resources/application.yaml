@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 spring:
   application:
     name: "accounts"
@@ -63,6 +64,7 @@ management:
     web:
       exposure:
         include: "*" # This configuration allows all management endpoints to be exposed over the web. This is useful for monitoring and managing the application, but in a production environment, you should consider restricting access to sensitive endpoints for security reasons.
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -115,3 +117,9 @@ resilience4j:
         exponentialBackoffMultiplier: 2 # This configuration sets the multiplier for exponential backoff to 2. This means that the wait duration between retry attempts will double after each failed attempt (e.g., 2 seconds, 4 seconds, 8 seconds). This can help to reduce the load on the system and increase the chances of a successful retry by allowing more time for transient issues to resolve before trying again.
         maxRetryAttempts: 3 # This configuration sets the maximum number of retry attempts to 3. This means that if a call fails, the system will automatically retry the call up to 3 times before giving up and returning an error. This can help to improve the resilience of the application by allowing it to recover from transient failures without requiring manual intervention.
         waitDuration: 5000 # This configuration sets the wait duration between retry attempts to 2000 milliseconds (2 seconds). This means that after a failed call, the system will wait for 2 seconds before attempting the next retry. This can help to prevent overwhelming the system with rapid retries and allows time for transient issues to resolve before trying again.
+  rateLimiter:
+    configs:
+      default:
+        limitForPeriod: 1 # This configuration sets the maximum number of calls that can be made within a specified time period to 1. This means that if more than 10 calls are made within the defined time period, subsequent calls will be rejected until the time period resets. This can help to prevent overloading the system and ensure that resources are used efficiently.
+        limitRefreshPeriod: 5s # This configuration sets the refresh period for the rate limiter to 5 second. This means that the rate limiter will reset its count of calls every second, allowing up to the defined limit (e.g., 10 calls) to be made within each second. This can help to control the rate of incoming requests and prevent abuse or overloading of the system.
+        timeoutDuration: 1000 # This configuration sets the timeout duration for acquiring a permit from the rate limiter to 1000 milliseconds (1 seconds). This means that if a call is made and the rate limiter is currently at its limit, the system will wait for up to 2 seconds to acquire a permit before throwing a timeout exception. This can help to prevent the system from hanging indefinitely when the rate limit is exceeded and allows for better handling of high traffic situations.
