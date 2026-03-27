@@ -71,9 +71,10 @@ public class CustomerController {
                                                                    @RequestParam
                                                                    @Pattern(regexp = "^[2-9][0-9]{9}$", message = "Phone number must be 10 digits")
                                                                    String phoneNumber) {
-        LOGGER.debug("correlationId: {}, Fetching customer details for phone number: {}", correlationId, phoneNumber);
+       LOGGER.debug("fetchCustomerDetails API called");
         // Implementation to fetch customer details based on phone number
         final CustomerDetailsDTO customerDetailsDTO = customerService.fetchCustomerDetails(phoneNumber, correlationId);
+        LOGGER.debug("Fetching customer details for phone number: {}", phoneNumber);
         return ResponseEntity.ok(customerDetailsDTO);
     }
 }

@@ -98,12 +98,14 @@ endpoints:
     enabled: true # This configuration enables the shutdown endpoint, which allows you to gracefully shut down the application by sending a POST request to the /actuator/shutdown endpoint. This can be useful for managing the lifecycle of the application and performing cleanup tasks before shutting down.
 
 logging:
-    level:
-      com:
-        financial:
-          accounts:
-            microservice: DEBUG # This configuration sets the logging level for the "com.financial.accounts" package to DEBUG. This means that all log messages at the DEBUG level and above (INFO, WARN, ERROR) will be logged for classes within this package. This can be useful for troubleshooting and debugging issues related to the accounts service, as it provides detailed information about the application's behavior and interactions with other components.
-
+  level:
+    com:
+      financial:
+        accounts:
+          microservice: DEBUG # This configuration sets the logging level for the "com.financial.accounts" package to DEBUG. This means that all log messages at the DEBUG level and above (INFO, WARN, ERROR) will be logged for classes within this package. This can be useful for troubleshooting and debugging issues related to the accounts service, as it provides detailed information about the application's behavior and interactions with other components.
+  pattern:
+    # %5p: This part of the pattern includes the log level (e.g., DEBUG, INFO, WARN, ERROR) in the log output, formatted to take up at least 5 characters. This helps to align the log levels in the output for better readability.
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"  # This configuration sets the logging pattern to include the log level, application name, trace ID, and span ID. The trace ID and span ID are used for distributed tracing, which allows you to track the flow of requests across multiple services in a microservices architecture. This can be helpful for debugging and monitoring the interactions between services.
 resilience4j:
   circuitbreaker:
     configs:
