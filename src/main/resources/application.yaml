@@ -64,7 +64,9 @@ management:
     web:
       exposure:
         include: "*" # This configuration allows all management endpoints to be exposed over the web. This is useful for monitoring and managing the application, but in a production environment, you should consider restricting access to sensitive endpoints for security reasons.
-
+  metrics:
+    tags:
+      application: ${spring.application.name}
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
