@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `accounts` (
     `customer_id` int NOT NULL,
     `account_type` varchar(100) NOT NULL,
     `branch_address` varchar(255) NOT NULL,
+    `communication_switch` BOOLEAN,
     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `created_by` varchar(100) NOT NULL,

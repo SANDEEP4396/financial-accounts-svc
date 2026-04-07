@@ -15,4 +15,5 @@ public interface IAccountsService {
     CustomerDTO fetchAccountDetailsWithPhoneNumber(String phoneNumber);
     boolean updateCustomerAccountDetails(CustomerDTO customerDTO);
     boolean deleteCustomerAccountDetails(String phoneNumber);
+    boolean updateCommunicationStatus(Long accountNumber);
 }

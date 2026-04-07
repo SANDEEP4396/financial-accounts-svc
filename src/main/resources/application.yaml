@@ -29,6 +29,27 @@ spring:
         enabled: true
         alphanumeric-ids:
           enabled: true
+   function:
+    definition: updateCommunicationStatus # This configuration defines a Spring Cloud Function bean named "updateCommunication". The "definition" property specifies that this function should be registered as a bean in the application context, allowing it to be invoked as part of the application's functionality. This setup is commonly used in event-driven architectures where different functions can be triggered based on specific events or messages, such as updating communication preferences when a certain event occurs.
+   stream:
+    bindings:
+      updateCommunicationStatus-in-0:
+        destination: communication-sent
+        content-type: application/json
+        group: ${spring.application.name}
+      sendCommunication-out-0:
+        content-type: application/json
+        destination: send-communication # This configuration sets the destination for the "accounts-out-0" binding to "send-communication". This means that when the application sends messages through this binding, they will be sent to the "send-communication" topic or queue. This setup is commonly used in event-driven architectures where different services can communicate with each other by sending messages to specific destinations, such as sending a notification when an account is created or updated.
+    kafka:
+      binder:
+        brokers:
+          - localhost:9092
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest
+#    connection-timeout: 10s
   h2:
     console:
       # Enable H2 console for debugging

@@ -1,5 +1,6 @@
 package com.financial.accounts.microservice.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -19,4 +20,6 @@ public class Accounts extends BaseEntity{
     private String accountType;
     private String branchAddress;
     private Long customerId;
+    @Column(name = "communication_switch")
+    private Boolean communicationSwitch;
 }
