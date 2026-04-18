@@ -1,7 +1,6 @@
 package com.financial.accounts.microservice.functions;
 
 import com.financial.accounts.microservice.service.IAccountsService;
-import com.financial.accounts.microservice.service.impl.AccountsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
